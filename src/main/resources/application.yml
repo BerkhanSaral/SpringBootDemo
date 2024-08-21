@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  error:
+    include-binding-errors: always
+    include-message: always
+    include-stacktrace: never
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/springboot_db
+    username: db_user
+    password: db_password
+  jpa:
+    show_sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        format_sql: true
+
+#yorum satiri
+# aktif etme
+# menü-->Run-->Edit Configuration
+# Açilan pencere de proje yoksa Add ile ekle
+# Modify option tikla --> Add VM option seç
+#-Dspring.profiles.active=dev --> YAZ
+# kapatmak için -Dspring.profiles.active=dev --> SIL

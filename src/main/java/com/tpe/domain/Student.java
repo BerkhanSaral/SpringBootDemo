@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 //@RequiredArgsConstructor:final ile işaretlenen fieldları parametre olarak alan constructor
 
-/*x
+/*
     public Student(String name, String lastName) {
         this.name = name;
         this.lastName = lastName;

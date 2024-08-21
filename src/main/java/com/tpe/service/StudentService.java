@@ -1,6 +1,7 @@
 package com.tpe.service;
 
 import com.tpe.domain.Student;
+import com.tpe.dto.StudentDTO;
 import com.tpe.dto.UpdateStudentDTO;
 import com.tpe.exception.ConflictException;
 import com.tpe.exception.ResourceNotFoundException;
@@ -39,59 +40,89 @@ public class StudentService {
 
     //6-id si verilen öğrenciyi bulma
     public Student getStudentById(Long id) {
-        Student student = repository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Student is not found by ID : " + id));
+        Student student = repository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Student is not found by ID : " + id));
 
         return student;
     }
 
-    public void deleteStudentById(Long id) {
+    //8-id si verilen öğrenciyi silme
+    public void deleteStudentById(Long id) {//9999
 
         //repository.deleteById(id);//delete from student where id=9999;
-        //bu idye sahip bir ogrenci (satir) yoksa ??
-        //ozel bir mesaj ile ozel bir exception firlatmak istiyouz
+        //bu idye sahip bir öğrenci (satır) yoksa???
+        //özel bir mesaj ile özel bir exception fırlatmak istiyoruz
 
-        //once idsi verilen ogrenciyi bulalim
+        //önce id si verilen öğrenciyi bulalım
         Student student = getStudentById(id);
         repository.delete(student);
 
-
     }
 
-    //10=idsi verilen ogrencinin name,lastName ve email degistirme
-    public void updateStudent(Long id, UpdateStudentDTO studentDTO) {//email:harry@mail.com
+    //10-idsi verilen öğrencinin name,lastname ve emailini değiştirme
+    public void updateStudent(Long id, UpdateStudentDTO studentDTO) {//id: 2 , email:harry@mail.com
 
-        Student foundStudent = getStudentById(id); //1,"Jack",  "Sparrow","jack@mail.com"
+        Student foundStudent = getStudentById(id);//1,"Jack","Sparrow","jack@mail.com",...
 
-        //DTO gelen email        tablodaki email
-        //1-xxx@mail.com         YOK   V (existByEmail:false) -->update
-        //2-harry@mail.com       idsi:2 olan ogrencinin maili X(existByEmail:true) -->ConflictException
-        boolean existaEmail = repository.existsByEmail(studentDTO.getEmail());
-        if (existaEmail && !foundStudent.getEmail().equals(studentDTO.getEmail())) {
-            //cakisma var
-            throw new ConflictException("Email already exists ");
+        //emailin unique olamsına engel var mı???
+        //DTOda gelen email          tablodaki email
+        //1-xxx@mail.com             YOK   V  (existsByEmail:false)  --> update
+        //2-harry@mail.com           başka bir öğrenciye ait X (existsByEmail:true)--> ConflictException
+        //3-jack@mail.com            kendisine ait V (existsByEmail:true) --> bu bir çakışma değil
+
+        //istek ile gönderilen email daha önce kullanılmış mı?
+        boolean existsEmail = repository.existsByEmail(studentDTO.getEmail());
+        if (existsEmail && !foundStudent.getEmail().equals(studentDTO.getEmail())) {
+            //çakışma var
+            throw new ConflictException("Email already exists!!!");
         }
-
 
         foundStudent.setName(studentDTO.getName());
         foundStudent.setLastName(studentDTO.getLastName());
         foundStudent.setEmail(studentDTO.getEmail());
 
-        repository.save(foundStudent);//saveOrUpdate gibi calisiyor.
-
+        repository.save(foundStudent);//saveOrUpdate gibi çalışır.
     }
 
-    //12-tablodaki tum kayilardan istenen ogrenci sayfasini getirme
+    //12-tablodaki tüm kayıtlardan istenen öğrenci sayfasını getirme
     public Page<Student> getAllStudentsPaging(Pageable pageable) {
 
         return repository.findAll(pageable);
-        //istenen bilgiler verilirse tum kayitlardan sadece ilgili sayfayi getirir
-        //istenen bilgileri pageable ile toplu olarak verebiliriz:sayfaNo,
-        //                                                        her sayfada kayit sayisi
-        //                                                        siralalam bilgisi(hangi ozellik, hangi yonde)
+        //istenen bilgiler verilirse tüm kayıtlardan sadece ilgili sayfayı getirir
+        //istenen bilgileri pageable ile toplu olarka verebiliriz:sayfaNo,
+        //                                                        her sayfada kayıt sayısı
+        //                                                        sıralama bilgisi(hangi özellik,hangi yönde)
+    }
 
+    //14-grade ile ogrencileri filtreleme
+    public List<Student> getStudentByGrade(Integer grade) {
 
+        //select * from student where grade=100
+        //return repository.findAllByGrade(grade);
 
+        return repository.filterStudentsByGrade(grade);
+    }
+    //16-odev
 
+    //18-a: DB`den idsi verilen entityi getirip DTOya tasitalim
+    // öğrencinin bazı fieldlarını DTO olarak getirme
+    public StudentDTO getStudentInfoById(Long id) {
+
+        Student foundStudent = getStudentById(id);
+
+//        StudentDTO studentDTO=
+//                new StudentDTO(foundStudent.getName(),foundStudent.getLastName(), foundStudent.getGrade());
+        //student(entity)--->studentDTO(DTO)
+
+        StudentDTO studentDTO = new StudentDTO(foundStudent);
+
+        return studentDTO;
+    }
+
+    //18-b : DB(tablodan)den dogrudan DTO(name,lastname,grade) cekme
+    public StudentDTO getStudentInfoByDTO(Long id) {
+        StudentDTO studentDTO = repository.findStudentDTOById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Student info is not found by id : " + id));
+        return studentDTO;
     }
 }

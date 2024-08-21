@@ -1,6 +1,7 @@
 package com.tpe.controller;
 
 import com.tpe.domain.Student;
+import com.tpe.dto.StudentDTO;
 import com.tpe.dto.UpdateStudentDTO;
 import com.tpe.service.StudentService;
 import lombok.RequiredArgsConstructor;
@@ -87,10 +88,9 @@ public class StudentController {
         return new ResponseEntity<>(student, HttpStatus.OK);//200
     }
 
-//ÖDEV:(Alternatif)5-path param ile id si verilen öğrenciyi getirme
-//request: http://localhost:8080/students/1 + GET
-//response : student + 200
-
+    //ÖDEV:(Alternatif)5-path param ile id si verilen öğrenciyi getirme
+    //request: http://localhost:8080/students/1 + GET
+    //response : student + 200
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudentByPath(@PathVariable("id") Long id) {
 
@@ -99,48 +99,95 @@ public class StudentController {
         return new ResponseEntity<>(student, HttpStatus.OK);//200
     }
 
-    //7-path param ile id si verilen ogrenciyi silme
+    //7-path param ile id si verilen öğrenciyi silme
     //request: http://localhost:8080/students/1 + DELETE
-    //response : basarili mesaji + 200
-
+    //response : başarılı mesaj + 200
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
+
         service.deleteStudentById(id);
-        //return  new ResponseEntity<>("Student is deleted successfully",HttpStatus.OK);//200
-        return ResponseEntity.ok("Student is deleted successfully");
+
+        //return new ResponseEntity<>("Student is deleted successfully...",HttpStatus.OK);//200
+        return ResponseEntity.ok("Student is deleted successfully...");//200
     }
 
-    //9-path param ile id si verilen ogrenciyi guncelleme : (name,lastName,email)
+    //9-path param ile id si verilen öğrenciyi güncelleme:(name,lastName,email)
     //request: http://localhost:8080/students/1 + PUT/PATCH + BODY(JSON)
-    //response: basarili mesaj + 201
-
+    //response: başarılı mesaj + 201
     @PatchMapping("/{id}")
     public ResponseEntity<String> updateStudent(@PathVariable Long id,
                                                 @Valid @RequestBody UpdateStudentDTO studentDTO) {
 
         service.updateStudent(id, studentDTO);
-        return new ResponseEntity<>("Student is updated successfully", HttpStatus.CREATED);//201
 
+        return new ResponseEntity<>("Student is updated successfully...", HttpStatus.CREATED);//201
     }
 
-    //11- tum ogrencileri listeleme : READ
-    //tum kayitlari page page(sayfa sayfa) gosterelim
+    //11-tüm öğrencileri listeleme : READ
+    //tüm kayıtları page page(sayfa sayfa) gösterelim
     //request :
+    //http://localhost:8080/students/page?
+    //                               page=3&
+    //                               size=20&
+    //                               sort=name&
+    //                               direction=DESC(ASC) + GET
 
-    //1 | 2 | 3 | 4 ....
+    // 1 | 2 | 3 | 4 .....next
     @GetMapping("/page")
     public ResponseEntity<Page<Student>> getAllStudentsByPage(@RequestParam("page") int pageNo,
                                                               @RequestParam("size") int size,
                                                               @RequestParam("sort") String property,
                                                               @RequestParam("direction") Sort.Direction direction) {
 
-
         Pageable pageable = PageRequest.of(pageNo, size, Sort.by(direction, property));
-        //findAll methodunun sayfa getirmesi icin gerekli olan bilgileri
-        //pageable tipinde verebiliriz
+        //findAll metodunun sayfa getirmesi için gerekli olan bilgileri
+        //pageable tipinde verebiliriz.
+
         Page<Student> studentPage = service.getAllStudentsPaging(pageable);
-    return  new ResponseEntity<>(studentPage,HttpStatus.OK);
-        }
+
+        return new ResponseEntity<>(studentPage, HttpStatus.OK);
+    }
+
+
+    //13-grade ile öğrencileri filtreleyelim
+    //request:http://localhost:8080/students/grade/100 + GET
+    //response : 100 grade e sahip olan öğrenci listesi + 200
+    @GetMapping("/grade/{grade}")
+    public ResponseEntity<List<Student>> getAllStudentByGrade(@PathVariable Integer grade) {
+
+        List<Student> studentList = service.getStudentByGrade(grade);
+        return new ResponseEntity<>(studentList, HttpStatus.OK);//200
+    }
+
+
+    //ÖDEVVVV:)
+    //JPA reponun hazır metodları
+    //JPQL/SQL ile custom sorgu
+    //15-lastname ile öğrencileri filtreleyelim
+    //request:http://localhost:8080/students/lastname?lastname=Potter + GET
+    //response : lastname e sahip olan öğrenci listesi + 200
+
+    //Meraklısına ÖDEVVV:) isim veya soyisme göre filtreleme
+    //request:http://localhost:8080/students/search?word=harry + GET
+
+    //17-id si verilen ogrencinin name,lastname ve grade getime
+    //request:http://localhost:8080/students/info/2+ GET
+    //response : id si verilen ogrencinin sadece 3 fieldini DTO ile dondururuz
+
+    @GetMapping("/info/{id}")
+    public ResponseEntity<StudentDTO> getStudentInfo(@PathVariable Long id) {
+        //StudentDTO studentDTO = service.getStudentInfoById(id);
+        StudentDTO studentDTO = service.getStudentInfoByDTO(id);
+
+        return ResponseEntity.ok(studentDTO);//200
+
+    }
+
+    //ÖDEVVVV:)
+    //JPA reponun hazır metodları
+    //JPQL/SQL ile custom sorgu
+    //19-name icinde "al" hecesi gecen ogrencileri  filtreleyelim : READ//ex:halil
+
 
 
 }

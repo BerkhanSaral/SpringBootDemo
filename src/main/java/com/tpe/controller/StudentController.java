@@ -5,14 +5,18 @@ import com.tpe.dto.StudentDTO;
 import com.tpe.dto.UpdateStudentDTO;
 import com.tpe.service.StudentService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -23,13 +27,15 @@ import java.util.List;
 @RequestMapping("/students")//http://localhost:8080/students/.....
 public class StudentController {
 
+
+    Logger logger= LoggerFactory.getLogger(StudentController.class);
+
     /*
     clienttan 3 şekilde data alabiliriz
     1-request body ile JSON formatında
     2-urlde path param
     3-urlde query param
      */
-
 
     private final StudentService service;
 
@@ -103,7 +109,7 @@ public class StudentController {
     //request: http://localhost:8080/students/1 + DELETE
     //response : başarılı mesaj + 200
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteStudent(@PathVariable Long id) {
+    public ResponseEntity<String> deleteStudent(@PathVariable Long id){
 
         service.deleteStudentById(id);
 
@@ -116,11 +122,11 @@ public class StudentController {
     //response: başarılı mesaj + 201
     @PatchMapping("/{id}")
     public ResponseEntity<String> updateStudent(@PathVariable Long id,
-                                                @Valid @RequestBody UpdateStudentDTO studentDTO) {
+                                                @Valid @RequestBody UpdateStudentDTO studentDTO){
 
-        service.updateStudent(id, studentDTO);
+        service.updateStudent(id,studentDTO);
 
-        return new ResponseEntity<>("Student is updated successfully...", HttpStatus.CREATED);//201
+        return new ResponseEntity<>("Student is updated successfully...",HttpStatus.CREATED);//201
     }
 
     //11-tüm öğrencileri listeleme : READ
@@ -137,28 +143,27 @@ public class StudentController {
     public ResponseEntity<Page<Student>> getAllStudentsByPage(@RequestParam("page") int pageNo,
                                                               @RequestParam("size") int size,
                                                               @RequestParam("sort") String property,
-                                                              @RequestParam("direction") Sort.Direction direction) {
+                                                              @RequestParam("direction")Sort.Direction direction){
 
-        Pageable pageable = PageRequest.of(pageNo, size, Sort.by(direction, property));
+        Pageable pageable= PageRequest.of(pageNo,size,Sort.by(direction,property));
         //findAll metodunun sayfa getirmesi için gerekli olan bilgileri
         //pageable tipinde verebiliriz.
 
-        Page<Student> studentPage = service.getAllStudentsPaging(pageable);
+        Page<Student> studentPage=service.getAllStudentsPaging(pageable);
 
-        return new ResponseEntity<>(studentPage, HttpStatus.OK);
+        return new ResponseEntity<>(studentPage,HttpStatus.OK);
     }
-
 
     //13-grade ile öğrencileri filtreleyelim
     //request:http://localhost:8080/students/grade/100 + GET
     //response : 100 grade e sahip olan öğrenci listesi + 200
     @GetMapping("/grade/{grade}")
-    public ResponseEntity<List<Student>> getAllStudentByGrade(@PathVariable Integer grade) {
+    public ResponseEntity<List<Student>> getAllStudentByGrade(@PathVariable Integer grade){
 
-        List<Student> studentList = service.getStudentByGrade(grade);
-        return new ResponseEntity<>(studentList, HttpStatus.OK);//200
+        List<Student> studentList=service.getAllStudentByGrade(grade);
+
+        return new ResponseEntity<>(studentList,HttpStatus.OK);//200
     }
-
 
     //ÖDEVVVV:)
     //JPA reponun hazır metodları
@@ -166,27 +171,59 @@ public class StudentController {
     //15-lastname ile öğrencileri filtreleyelim
     //request:http://localhost:8080/students/lastname?lastname=Potter + GET
     //response : lastname e sahip olan öğrenci listesi + 200
+    @GetMapping("/lastname")
+    public ResponseEntity<List<Student>> getStudentsByLastName(@RequestParam String lastName){
+
+        List<Student> studentList=service.getAllStudentByLastName(lastName);
+
+        return ResponseEntity.ok(studentList);//200
+    }
 
     //Meraklısına ÖDEVVV:) isim veya soyisme göre filtreleme
     //request:http://localhost:8080/students/search?word=harry + GET
 
-    //17-id si verilen ogrencinin name,lastname ve grade getime
-    //request:http://localhost:8080/students/info/2+ GET
-    //response : id si verilen ogrencinin sadece 3 fieldini DTO ile dondururuz
 
+    //17-id si verilen öğrencinin name,lastName ve grade getirme
+    //request:http://localhost:8080/students/info/2 + GET
+    //response : id si verilen öğrencinin sadece 3 fieldını DTO ile + 200
     @GetMapping("/info/{id}")
-    public ResponseEntity<StudentDTO> getStudentInfo(@PathVariable Long id) {
-        //StudentDTO studentDTO = service.getStudentInfoById(id);
-        StudentDTO studentDTO = service.getStudentInfoByDTO(id);
+    public ResponseEntity<StudentDTO> getStudentInfo(@PathVariable Long id){
+
+        //StudentDTO studentDTO=service.getStudentInfoById(id);
+        StudentDTO studentDTO=service.getStudentInfoByDTO(id);
+
+        logger.warn("-----servisten gelen DTO objesi----------"+studentDTO.getName());
 
         return ResponseEntity.ok(studentDTO);//200
+    }
+
+    //ÖDEVVV:) JPA reponun hazır metodunu türeterek veya
+    //          JPQL/SQL ile custom sorgu yazarak
+    //19-name içinde "al" hecesi geçen öğrencileri filtreleyelim: READ//ex:halil
+    //http://localhost:8080/students/filter?word=al + GET
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Student>> getStudentInfo(@RequestParam String word){
+
+        List<Student> students=service.getStudentsSearching(word);
+
+        return ResponseEntity.ok(students);//200
 
     }
 
-    //ÖDEVVVV:)
-    //JPA reponun hazır metodları
-    //JPQL/SQL ile custom sorgu
-    //19-name icinde "al" hecesi gecen ogrencileri  filtreleyelim : READ//ex:halil
+
+    //21-/http://localhost:8080/students/welcome + GET
+    @GetMapping("/welcome")
+    public String welcome(HttpServletRequest request){
+
+        logger.info("welcome isteğinin pathi: "+request.getServletPath());
+        logger.info("welcome isteğinin http metodu : "+request.getMethod());
+
+        return "Welcome:)";
+    }
+
+
+
 
 
 

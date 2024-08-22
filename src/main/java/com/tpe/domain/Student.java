@@ -3,8 +3,13 @@ package com.tpe.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter//tüm fieldlar için getter metodunun tanımlanmasını sağlar
 @Setter//tüm fieldlar için setter metodunun tanımlanmasını sağlar
@@ -29,12 +34,12 @@ public class Student {
     private Long id;
 
     @NotBlank(message = "name can not be blank!")//request anında doğrulama
-    @Size(min = 2,max = 50,message = "name must be between 2 and 50")//request anında doğrulama
+    @Size(min = 2, max = 50, message = "name must be between 2 and 50")//request anında doğrulama
     @Column(nullable = false)
     /*final*/ private String name;
 
     @NotBlank(message = "lastname can not be blank!")//request anında doğrulama
-    @Size(min = 2,max = 50,message = "lastname must be between 2 and 50")//request anında doğrulama
+    @Size(min = 2, max = 50, message = "lastname must be between 2 and 50")//request anında doğrulama
     @Column(nullable = false)
     /*final*/ private String lastName;
 
@@ -48,7 +53,10 @@ public class Student {
     private String email;
 
     @Setter(AccessLevel.NONE)
-    private LocalDateTime createDate=LocalDateTime.now();
+    private LocalDateTime createDate = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "student")
+    private List<Book> bookList = new ArrayList<>();
 
     //getter-setter:boilerplate code
 

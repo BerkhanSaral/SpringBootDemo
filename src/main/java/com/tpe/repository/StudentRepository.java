@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository//opsiyonel
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface StudentRepository extends JpaRepository<Student,Long> {
     //JpaRepositorydeki metodlar Spring tarafından otomatik olarak implemente edilir
     boolean existsByEmail(String email);
 
@@ -25,15 +25,19 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     //14-c
     //SQL
-    @Query(value = "SELECT * FROM student WHERE grade=:pGrade", nativeQuery = true)
+    @Query(value = "SELECT * FROM student WHERE grade=:pGrade",nativeQuery = true)
     List<Student> filterStudentsByGradeSQL(@Param("pGrade") Integer grade);
 
     //18-JPQL ile tablodan gelen entity objesi DTO nun constructorı ile
     // DTO objesine dönüştürülür
-    @Query("SELECT new com.tpe.dto.StudentDTO(s) FROM Student s WHERE id=:pId")
+    @Query("SELECT new com.tpe.dto.StudentDTO(s) FROM Student s WHERE s.id=:pId")
     Optional<StudentDTO> findStudentDTOById(@Param("pId") Long id);
 
+    //16-a:ÖDEVV
+    List<Student> findAllByLastName(String lastName);//spring implemente eder
 
+    //20-a
+    List<Student> findByNameContains(String word);//spring implemente eder
 
 
 }

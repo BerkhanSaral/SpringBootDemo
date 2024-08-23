@@ -18,16 +18,22 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL9Dialect
         format_sql: true
+  security:
+    user:
+      name: admin
+      password: password
 
-logging: #logging.file.name:log/studentapp.log
+logging:   #logging.file.name:log/studentapp.log
   file:
     name: log/studentapp.log
-  paxttern:
+  pattern:
     file: "%d %-5level [%thread] %logger:%msg%n"
   level:
     '[org.springframework.web]': WARN
     '[org.hibernate]': INFO
-    '[com.tpe]': INFO
+    #'[com.tpe]': INFO
+    com:
+      tpe: INFO
 
 management:
   endpoints:
@@ -43,6 +49,9 @@ info:
     name: 'Student Management System Demo App '
     version: '@project.version@'
     description: 'Demo App For Spring Boot'
+
+
+
 
 #yorum satiri
 # aktif etme

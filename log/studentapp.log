@@ -1,1 +1,35 @@
 2024-08-22 18:49:04.658  WARN 12420 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=19h30m45s240ms129µs700ns).
+2024-08-22 21:28:20.451  INFO 8404 --- [restartedMain] com.tpe.SpringBootIntroApplication       : Starting SpringBootIntroApplication using Java 11.0.22 on Berkhan with PID 8404 (C:\Users\saral\OneDrive\Masaüstü\TechProEducaion\Java\SpringBootDemo\target\classes started by saral in C:\Users\saral\OneDrive\Masaüstü\TechProEducaion\Java\SpringBootDemo)
+2024-08-22 21:28:20.452  INFO 8404 --- [restartedMain] com.tpe.SpringBootIntroApplication       : No active profile set, falling back to default profiles: default
+2024-08-22 21:28:20.507  INFO 8404 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-08-22 21:28:20.507  INFO 8404 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-08-22 21:28:21.283  INFO 8404 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-08-22 21:28:21.323  INFO 8404 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 32 ms. Found 1 JPA repository interfaces.
+2024-08-22 21:28:21.980  INFO 8404 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2024-08-22 21:28:21.988  INFO 8404 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-08-22 21:28:21.988  INFO 8404 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.56]
+2024-08-22 21:28:22.071  INFO 8404 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2024-08-22 21:28:22.071  INFO 8404 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1563 ms
+2024-08-22 21:28:22.335  INFO 8404 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-08-22 21:28:22.372  INFO 8404 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 5.6.4.Final
+2024-08-22 21:28:22.488  INFO 8404 --- [restartedMain] o.hibernate.annotations.common.Version   : HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2024-08-22 21:28:22.599  INFO 8404 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-08-22 21:28:22.777  INFO 8404 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-08-22 21:28:22.792  INFO 8404 --- [restartedMain] org.hibernate.dialect.Dialect            : HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2024-08-22 21:28:23.414  INFO 8404 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-08-22 21:28:23.422  INFO 8404 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-08-22 21:28:23.851  WARN 8404 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-08-22 21:28:24.207  INFO 8404 --- [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 16c225aa-432f-48d4-b560-3eb7faff1605
+
+2024-08-22 21:28:24.319  INFO 8404 --- [restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 6 endpoint(s) beneath base path '/actuator'
+2024-08-22 21:28:24.331  INFO 8404 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@6a7ed01, org.springframework.security.web.context.SecurityContextPersistenceFilter@3bce55bb, org.springframework.security.web.header.HeaderWriterFilter@879041a, org.springframework.web.filter.CorsFilter@363a8c98, org.springframework.security.web.csrf.CsrfFilter@7affe4dd, org.springframework.security.web.authentication.logout.LogoutFilter@548b00f0, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter@b8a7d26, org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter@260c659b, org.springframework.security.web.authentication.ui.DefaultLogoutPageGeneratingFilter@6b8b0c70, org.springframework.security.web.authentication.www.BasicAuthenticationFilter@ffa52d5, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@489756e5, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@d3d9f57, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@489db255, org.springframework.security.web.session.SessionManagementFilter@61ba7a3a, org.springframework.security.web.access.ExceptionTranslationFilter@7de10e8a, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@51c61e13]
+2024-08-22 21:28:24.394  INFO 8404 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-08-22 21:28:24.430  INFO 8404 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2024-08-22 21:28:24.447  INFO 8404 --- [restartedMain] com.tpe.SpringBootIntroApplication       : Started SpringBootIntroApplication in 4.422 seconds (JVM running for 4.875)
+2024-08-22 21:28:32.998  INFO 8404 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-08-22 21:28:33.148  WARN 8404 --- [http-nio-8080-exec-1] o.a.c.util.SessionIdGeneratorBase        : Creation of SecureRandom instance for session ID generation using [SHA1PRNG] took [119] milliseconds.
+2024-08-22 21:32:35.057  INFO 8404 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-08-22 21:32:35.061  INFO 8404 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2024-08-22 21:32:35.074  INFO 8404 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

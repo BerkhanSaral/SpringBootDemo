@@ -2,7 +2,6 @@ package com.tpe.security;
 
 import com.tpe.domain.Role;
 import com.tpe.domain.User;
-import com.tpe.repository.RoleRepository;
 import com.tpe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,13 +25,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user=userRepository.findByUsername(username).
+        User user=userRepository.findByuserName(username).
                 orElseThrow(()->new UsernameNotFoundException("User not found by username:"+username));
 
         return new org.springframework.security.core.userdetails.
                 User(user.getUserName(),user.getPassword(),buildGrantedAuthorities(user.getRoles()));
+        //kendi userımızın bilgileri ile securitynin userını(userdetails) oluşturduk
     }
 
+    //bizim userımızın rolleri var -->grantedauthoritylere çevirelim
+    //simplegrantedauthority->security nin tanıdığı rolleri
     private List<SimpleGrantedAuthority> buildGrantedAuthorities(Set<Role> roles){
         List<SimpleGrantedAuthority> authorities=new ArrayList<>();
 

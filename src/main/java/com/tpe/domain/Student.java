@@ -58,6 +58,9 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private List<Book> bookList = new ArrayList<>();
 
+    @OneToOne
+    private User user;
+
     //getter-setter:boilerplate code
 
 
